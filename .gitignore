@@ -1,0 +1,28 @@
+# 默认忽略的文件
+/shelf/
+/workspace.xml
+# 基于编辑器的 HTTP 客户端请求
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+#数据集
+Dataset/
+
+#常见数据/大文件
+*.csv
+*.pth
+*.pt
+*.tif
+*.tiff
+*.png
+*.jpg
+*.jpeg
+
+# 训练输出
+runs/
+logs/
+outputs/
+__pycache__/
+*.pyc
