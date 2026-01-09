@@ -5,7 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 import torch.nn as nn
 
 from datasets import load_items_from_csv, stratified_split, show_dist, CsvListDataset, build_transforms
-from model2 import build_model, freeze_backbone
+from model import build_model, freeze_backbone
 from train import train_one_epoch
 from eval import eval_one_epoch
 

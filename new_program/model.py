@@ -82,12 +82,12 @@ def show_dist(name,items):
 
 train_items,val_items=stratified_split(items,val_ratio=0.2,seed=42)
 
-show_dist("ALL", items)
-show_dist("TRAIN", train_items)
-show_dist("VAL", val_items)
+# show_dist("ALL", items)
+# show_dist("TRAIN", train_items)
+# show_dist("VAL", val_items)
 
-print("TRAIN前3条:",train_items[:3])
-print("VAL前3条:",val_items[:3])
+# print("TRAIN前3条:",train_items[:3])
+# print("VAL前3条:",val_items[:3])
 
 
 
@@ -124,7 +124,7 @@ train_ds=CsvListDataset("Dataset/train",train_items,transforms=transform,suffix=
 val_ds=CsvListDataset("Dataset/train",val_items,transforms=transform,suffix=suffix)
 
 train_loader=DataLoader(train_ds,batch_size=64,shuffle=True,num_workers=0)
-val_loader=DataLoader(val_ds,batch_size=64,shuffle=False,num_workers=0)
+val_loader=DataLoader(val_ds,batch_size=64,shuffle=False,num_workers=0)  #可改
 
 x,y=next(iter(train_loader))
 print("一个batch的x形状:",x.shape,"y形状:",y.shape)
@@ -134,7 +134,7 @@ print("y前10个:",y[:10])
 device=torch.device("cuda"if torch.cuda.is_available() else "cpu")
 print("当前设备:",device)
 
-#加载Resnet34,暂时没加载预训练(现在加)
+#加载Resnet34,暂时没加载预训练(现在加)  可改
 model=models.resnet34(weights=None)
 model=models.resnet34(weights=models.ResNet34_Weights.IMAGENET1K_V1)
 
@@ -161,6 +161,7 @@ def train_one_epoch(model,loader,criterion,optimizer,device):
     tn=0
 
     for batch_idx,(imgs,labels) in enumerate(loader, start=1):
+        model.train()
         #device
         imgs=imgs.to(device)
         labels=labels.to(device)
@@ -185,7 +186,7 @@ def train_one_epoch(model,loader,criterion,optimizer,device):
         tn+=((preds==0)&(labels==0)).sum().item()
 
         #指标
-        if batch_idx % 10 ==0:
+        if batch_idx % 10 ==0:  #可改
             batch_loss=loss.item()
             batch_acc=(preds==labels).float().mean().item()
             print(f"  Batch {batch_idx}: loss {batch_loss:.4f}, acc {batch_acc:.4f}")
@@ -236,9 +237,9 @@ def eval_one_epoch(model,loader,criterion,device):
 
 #真正开始训练
 
-num_epochs=5
+num_epochs=20#可改
 
-writer=SummaryWriter(log_dir="runs/exp1")
+writer=SummaryWriter(log_dir="runs/exp1")#可改
 
 for epoch in range(num_epochs):
     train_loss,train_acc,train_p,train_r,train_f1=train_one_epoch(model,train_loader,loss,optimizer,device)
@@ -263,6 +264,6 @@ for epoch in range(num_epochs):
         f"P: {val_p:.4f} R: {val_r:.4f} F1: {val_f1:.4f}"
     )
 
-    torch.save(model.state_dict(),f"model_epoch{epoch+1}.pth")
+    torch.save(model.state_dict(),f"model_epoch{epoch+1}.pth")#可改
 
 writer.close()
